@@ -1,8 +1,20 @@
+package rpg.game.rooms;
+
+import rpg.utility.Tuple;
+
 public enum Direction {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST;
+    NORTH(0, 1),
+    SOUTH(0, -1),
+    EAST(1, 0),
+    WEST(-1, 0);
+
+    private final int dx;
+    private final int dy;
+
+    private Direction(int dx, int dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
 
     public Direction opposite() {
         return switch (this) {
@@ -13,7 +25,14 @@ public enum Direction {
         };
     }
 
+    public int dx() {
+        return dx;
+    }
 
+    public int dy() {
+        return dy;
+    }
+    
     public Direction fromInput(String input) {
         return switch (input.toLowerCase()) {
             case "n", "north" -> Direction.NORTH;
