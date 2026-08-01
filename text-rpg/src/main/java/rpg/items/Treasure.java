@@ -1,6 +1,6 @@
 package rpg.items;
 
-import java.util.Random;
+import rpg.utility.RandomUtil;
 
 public class Treasure {
 
@@ -12,7 +12,7 @@ public class Treasure {
     private Treasure() {}
 
     public static int randomTreasure() {
-        double chance = Math.random();
+        double chance = RandomUtil.randomDouble();
 
         if (chance < 0.4) {
             return 0;

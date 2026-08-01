@@ -1,6 +1,8 @@
-package rpg.game;
+package rpg.utility;
 
 import java.util.Scanner;
+
+import rpg.game.rooms.Direction;
 
 public class InputHandler {
     
@@ -53,7 +55,7 @@ public class InputHandler {
         
         System.out.println("Choose one:");
         for (int i = 0; i < arr.length; i++) {
-            System.out.println((i + 1) + ": " + arr[i]);
+            System.out.println((i + 1) + ": " + arr[i].toString());
         }
 
         return arr[playerNum(1, arr.length) - 1];

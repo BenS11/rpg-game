@@ -1,14 +1,13 @@
-package rpg.player.playerType;
+package rpg.player.playerTemplates;
 
 import java.util.ArrayList;
 
 import rpg.abilities.Attack;
 
-public abstract class PlayerType {
+public abstract class PlayerTemplate {
     
     protected ArrayList<Attack> typeAttacks;
-    protected int baseHealth;
-
+    protected int hpMax;
 
     public abstract String description();
 }

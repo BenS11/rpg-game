@@ -1,30 +1,60 @@
 package rpg.game.rooms;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import rpg.items.Item;
 import rpg.npcs.Enemy;
+import rpg.player.Player;
+import rpg.utility.Coordinate;
+import rpg.utility.InputHandler;
 
 public class Room {
-    private List<Enemy> enemies; 
+    private List<Enemy> enemies = new ArrayList<>(); 
     private int treasure;
     private Item item;
-    private HashMap<Direction, Room> exits = new HashMap<>();
-
-    private static int roomsCreated = 0;
-
+    private EnumMap<Direction, Room> exits = new EnumMap<>(Direction.class);
+    private boolean bossRoom = false;
 
 
-    public Room(int treasure, Item item, List<Enemy> enemies) {
-        roomsCreated++;
-        this.treasure = treasure;
-        this.item = item;
-        this.enemies = enemies;
+
+    public Room() {}
+
+    public Room withEnemies(List<Enemy> enemies) {
+        this.enemies.addAll(enemies);
+        return this;
     }
 
-    public void addExit(Direction direction, Room room) {
+    public Room withTreasure(int treasure) {
+        this.treasure = treasure;
+        return this;
+    }
+
+    public Room withItem(Item item) {
+        this.item = item;
+        return this;
+    }
+
+    public Room withBoss(Enemy boss) {
+        this.bossRoom = true;
+        this.enemies.add(boss);
+        return this;
+    }
+
+    public void onEnter(Player player) {
+
+    }
+
+    public Room onExit(Player player) {
+
+
+        return InputHandler.choice()
+    }
+
+    public void connect(Direction direction, Room room) {
         Objects.requireNonNull(direction);
         Objects.requireNonNull(room);
 
@@ -41,15 +71,31 @@ public class Room {
     }
 
     public void connectBiDirectional(Direction direction, Room room) {
-        this.addExit(direction, room);
-        room.addExit(direction.opposite(), this);
+        this.connect(direction, room);
+        room.connect(direction.opposite(), this);
     }
 
     public boolean hasExit(Direction dir) {
         return exits.containsKey(dir);
     }
 
-    public void generateMap() {
+    /**
+     * generates a map and returns starter room
+     * @return
+     */
+    public static Room generateMap() {
+        Room start = Rooms.createStartRoom();
+        Room right = Rooms.createRandomRoom(1);
+        Room left = Rooms.createRandomRoom(1);
+
+        start.connect(Direction.WEST, left);
+        start.connect(Direction.EAST, right);
+
+
+
+        
+
+        return start;
 
     }
 

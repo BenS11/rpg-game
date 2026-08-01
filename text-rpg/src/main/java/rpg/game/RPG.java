@@ -1,5 +1,7 @@
 package rpg.game;
 
+import rpg.game.rooms.Room;
+import rpg.game.rooms.Rooms;
 import rpg.player.Player;
 
 public class RPG {
@@ -14,5 +16,10 @@ public class RPG {
     private void startGame() {
         Player player = new Player();
 
+        Room activeRoom = Rooms.createStartRoom();
+
+        while (player.bossAlive() && player.playerAlive()) {
+            activeRoom.onEnter(player);
+        }
     }
 }
