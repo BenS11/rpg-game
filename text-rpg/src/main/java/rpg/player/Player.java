@@ -48,11 +48,16 @@ public class Player {
         return healthRemaining > 0;
     }
 
+    public void addAttacks();
+
+    public double calculateMagicDamage(Attack attack) {
+        
+    } 
 
 
     public void fight(List<Enemy> enemies) {
         for (Enemy e: enemies) {
-
+            
         }
 
     }
