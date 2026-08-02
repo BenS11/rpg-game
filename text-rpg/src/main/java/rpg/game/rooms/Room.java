@@ -45,13 +45,31 @@ public class Room {
     }
 
     public void onEnter(Player player) {
-
+        if (!enemies.isEmpty()) {
+            System.out.println("This room contains:");
+            for (Enemy e : enemies) {
+                System.out.println(e.toString());
+            }
+            player.fight(enemies);
+        }
     }
 
     public Room onExit(Player player) {
+        
+        System.out.println("Congrats!");
+        if (treasure > 0) {
+            System.out.println("You gained " + treasure);
+            player.addTreasure(treasure);
+        } 
+
+        if (item != null) {
+            System.out.println("You gained a " + item.toString());
+            player.addItem(item);
+        }
 
 
-        return InputHandler.choice()
+        System.out.println("Which direction would you like to go?");
+        return exits.get(InputHandler.choice(exits.keySet().toArray()));
     }
 
     public void connect(Direction direction, Room room) {

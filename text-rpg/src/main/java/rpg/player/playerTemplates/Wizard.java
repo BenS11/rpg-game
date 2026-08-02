@@ -22,6 +22,6 @@ public class Wizard extends PlayerTemplate {
     
     @Override
     public String toString() {
-        return "Barbarian";
+        return "Wizard";
     }
 }

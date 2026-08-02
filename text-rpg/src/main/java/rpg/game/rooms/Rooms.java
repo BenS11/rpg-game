@@ -22,7 +22,7 @@ public class Rooms {
     }
 
     public static Room createStartRoom() {
-        return new Room().withItem(null);
+        return new Room();
     }
 
     public static Room createTreasureRoom() {

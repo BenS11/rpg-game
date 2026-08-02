@@ -11,6 +11,7 @@ public class Barbarian extends PlayerTemplate {
 
     public Barbarian() {
         this.typeAttacks = new ArrayList<>();
+        this.hpMax = 20;
     }
 
 

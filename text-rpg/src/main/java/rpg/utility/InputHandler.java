@@ -1,5 +1,6 @@
 package rpg.utility;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Scanner;
 
 import rpg.game.rooms.Direction;
@@ -13,7 +14,15 @@ public class InputHandler {
     }
 
     public static String playerInput() {
-        return input.nextLine().trim();
+        String str = input.nextLine().trim();
+        if (str.equalsIgnoreCase("esc")) {
+            System.out.println("Are you sure you want to exit?");
+            if (playerYesNo()) {
+                throw new RuntimeException("Exited game");
+            }
+        }
+
+        return str;
     }
 
     public static String playerInput(String str) {
@@ -23,12 +32,12 @@ public class InputHandler {
 
     public static boolean playerYesNo() {
         String next = "";
-        while (!(next.equalsIgnoreCase("Y") && !(next.equalsIgnoreCase("N")))) {
+        while (!(next.equalsIgnoreCase("Y") || next.equalsIgnoreCase("N"))) {
             System.out.println("Y/N");
             next = playerInput();
         }
 
-        return next.equals("Y");
+        return next.equalsIgnoreCase("Y");
     }
 
     /**
@@ -53,6 +62,10 @@ public class InputHandler {
     @SafeVarargs
     public static <T> T choice(T... arr) {
         
+        if (arr.length < 1) {
+            throw new IllegalArgumentException("Must have at least one choice");
+        }
+
         System.out.println("Choose one:");
         for (int i = 0; i < arr.length; i++) {
             System.out.println((i + 1) + ": " + arr[i].toString());
