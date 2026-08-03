@@ -4,12 +4,14 @@ package rpg.items;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import rpg.abilities.Element;
+
 public class Item {
     
-    public static final Comparator<Item> comparator = Comparator.comparing(Item::isMultiplicative).thenComparing(Item::sumBonus);
+    public static final Comparator<Item> comparator = Comparator.comparing(Item::isMultiplicative).thenComparing(Item::bonus);
 
-    private double magicBonus = 1.0;
-    private double physicalBonus = 1.0;
+    private double bonus = 1.0;
+    private Element element = Element.NONE;
     private boolean multiplicative = false;
 
 
@@ -17,13 +19,13 @@ public class Item {
 
     }
 
-    public Item withMagicBonus(double bonus) {
-        magicBonus = bonus;
+    public Item withElement(Element e) {
+        this.element = e;
         return this;
     }
 
-    public Item withPhysicalBonus(double bonus) {
-        physicalBonus = bonus;
+    public Item withBonus(double bonus) {
+        this.bonus = bonus;
         return this;
     }
 
@@ -36,13 +38,16 @@ public class Item {
         return multiplicative;
     }
 
-    private double sumBonus() {
-        return physicalBonus + magicBonus;
+    public boolean isAdditive() {
+        return !multiplicative;
     }
 
-    public double magicBonus() {
-        return magicBonus;
+    public Element element() {
+        return element;
     }
 
+    public double bonus() {
+        return bonus;
+    }
 
 }

@@ -1,5 +1,6 @@
 package rpg.utility;
 
+import java.util.List;
 import java.util.Random;
 
 public class RandomUtil {
@@ -20,5 +21,9 @@ public class RandomUtil {
 
     public static boolean randomBoolean() {
         return rand.nextBoolean();
+    }
+
+    public static <T> T randomChoice(List<T> arr) {
+        return arr.get(rand.nextInt(0, arr.size()));
     }
 }

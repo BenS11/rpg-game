@@ -5,5 +5,6 @@ public enum Element {
     WATER,
     AIR,
     EARTH,
-    PHYSICAL
+    PHYSICAL,
+    NONE
 }

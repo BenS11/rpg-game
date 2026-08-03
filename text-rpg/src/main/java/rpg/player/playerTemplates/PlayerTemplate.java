@@ -2,13 +2,15 @@ package rpg.player.playerTemplates;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import rpg.abilities.Attack;
 
 public abstract class PlayerTemplate {
     
-    protected ArrayList<Attack> typeAttacks;
+    protected Set<Attack> typeAttacks = new LinkedHashSet<>();
     protected int hpMax;
 
     public int hpMax() {
@@ -17,7 +19,7 @@ public abstract class PlayerTemplate {
 
     public abstract String description();
 
-    public List<Attack> attacks() {
+    public Set<Attack> attacks() {
         return typeAttacks;
     };
 }

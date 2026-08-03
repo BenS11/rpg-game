@@ -2,6 +2,7 @@ package rpg.game.rooms;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import rpg.items.Treasure;
 import rpg.npcs.Enemies;
@@ -30,19 +31,26 @@ public class Rooms {
     }
 
     public static Room createSmallEnemyRoom() {
-        return new Room().withTreasure(Treasure.randomTreasure()).withEnemies(null);
+        return new Room().withTreasure(Treasure.randomTreasure()).withEnemies(
+            List.of(Enemies.getSmallEnemy(), Enemies.getSmallEnemy()));
     }
 
     public static Room createMediumEnemyRoom() {
-        return new Room().withTreasure(Treasure.randomTreasure());
+        return new Room()
+            .withTreasure(Treasure.randomTreasure())
+            .withEnemies(List.of(Enemies.getMediumEnemy(), Enemies.getMediumEnemy()));
     }
 
     public static Room createLargeEnemyRoom() {
-        return new Room();
+        return new Room()
+            .withEnemies(List.of(Enemies.getLargeEnemy()))
+            .withTreasure(Treasure.LARGE);
     }
 
     public static Room createBossRoom() {
-        return new Room();
+        return new Room()
+            .withEnemies(List.of(Enemies.getBoss()))
+            .withTreasure(Treasure.BOSS_REWARD);
     }
 
     public static Room createRandomRoom(int depth) {
