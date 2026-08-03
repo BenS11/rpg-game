@@ -88,9 +88,17 @@ public class Room {
 
     }
 
-    public void connectBiDirectional(Direction direction, Room room) {
+    /**
+     * Connects this room to another room
+     * @param direction The direction of the exit that connects this room to the other
+     * @param room The room
+     * @return The room passed in the argument to chain connections
+     */
+    public Room connectBiDirectional(Direction direction, Room room) {
         this.connect(direction, room);
         room.connect(direction.opposite(), this);
+
+        return room;
     }
 
     public boolean hasExit(Direction dir) {

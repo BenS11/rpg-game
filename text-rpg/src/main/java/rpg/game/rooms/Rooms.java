@@ -57,5 +57,15 @@ public class Rooms {
         return new Room();
     }
 
+    public static Room createSmallTestMap() {
+        Room startRoom = createStartRoom();
+
+        startRoom.connectBiDirectional(Direction.NORTH, createSmallEnemyRoom()).connectBiDirectional(Direction.EAST, createMediumEnemyRoom()).connectBiDirectional(Direction.NORTH, createLargeEnemyRoom());
+
+        startRoom.connectBiDirectional(Direction.SOUTH, createSmallEnemyRoom()).connectBiDirectional(Direction.WEST, createMediumEnemyRoom()).connect(Direction.WEST, createBossRoom());
+
+        return startRoom;
+    }
+
 }
 

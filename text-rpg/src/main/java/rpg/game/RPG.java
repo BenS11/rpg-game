@@ -22,14 +22,7 @@ public class RPG {
     private void startGame() {
         Player player = new Player();
 
-        Room activeRoom = Rooms.createStartRoom();
-        Room r1 = Rooms.createSmallEnemyRoom();
-        Room r2 = Rooms.createMediumEnemyRoom();
-        Room r3 = Rooms.createBossRoom();
-
-        activeRoom.connectBiDirectional(Direction.NORTH, r1);
-        r1.connectBiDirectional(Direction.NORTH, r2);
-        r2.connectBiDirectional(Direction.NORTH, r3);
+        Room activeRoom = Rooms.createSmallTestMap();
 
         while (player.bossAlive() && player.isAlive()) {
             activeRoom.onEnter(player);
