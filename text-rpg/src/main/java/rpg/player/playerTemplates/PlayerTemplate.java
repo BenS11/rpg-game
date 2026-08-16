@@ -10,7 +10,7 @@ import rpg.abilities.Attack;
 
 public abstract class PlayerTemplate {
     
-    protected Set<Attack> typeAttacks = new LinkedHashSet<>();
+    protected List<Attack> typeAttacks = new ArrayList<>();
     protected int hpMax;
 
     public int hpMax() {
@@ -19,7 +19,7 @@ public abstract class PlayerTemplate {
 
     public abstract String description();
 
-    public Set<Attack> attacks() {
+    public List<Attack> attacks() {
         return typeAttacks;
     };
 }

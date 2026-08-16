@@ -9,6 +9,7 @@ import rpg.npcs.Enemies;
 import rpg.npcs.Enemy;
 import rpg.player.Player;
 import rpg.utility.InputHandler;
+import rpg.utility.OutputHandler;
 
 public class RPG {
 
@@ -30,7 +31,7 @@ public class RPG {
             if (player.isAlive()) {
                 activeRoom = activeRoom.onExit(player);
             } else {
-                System.out.println("You died! ):");
+                OutputHandler.println("You died! ):");
                 break;
             }
         }

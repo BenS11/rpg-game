@@ -11,6 +11,7 @@ import rpg.npcs.Enemy;
 import rpg.player.Player;
 import rpg.utility.Coordinate;
 import rpg.utility.InputHandler;
+import rpg.utility.OutputHandler;
 
 public class Room {
     private List<Enemy> enemies = new ArrayList<>(); 
@@ -46,9 +47,9 @@ public class Room {
 
     public void onEnter(Player player) {
         if (!enemies.isEmpty()) {
-            System.out.println("This room contains:");
+            OutputHandler.println("This room contains:");
             for (Enemy e : enemies) {
-                System.out.println(e.toString());
+                OutputHandler.println(e.toString());
             }
             player.fight(enemies);
         }
@@ -56,19 +57,23 @@ public class Room {
 
     public Room onExit(Player player) {
         
-        System.out.println("Congrats!");
+        OutputHandler.println("Congrats!");
         if (treasure > 0) {
-            System.out.println("You gained " + treasure);
+            OutputHandler.println("You gained " + treasure);
             player.addTreasure(treasure);
         } 
 
         if (item != null) {
-            System.out.println("You gained a " + item.toString());
+            OutputHandler.println("You gained a " + item.toString());
             player.addItem(item);
         }
 
+        if (bossRoom) {
 
-        System.out.println("Which direction would you like to go?");
+        }
+
+
+        OutputHandler.println("Which direction would you like to go?");
         return exits.get(InputHandler.choice(exits.keySet().toArray()));
     }
 

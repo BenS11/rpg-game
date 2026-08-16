@@ -16,7 +16,7 @@ public class InputHandler {
     public static String playerInput() {
         String str = input.nextLine().trim();
         if (str.equalsIgnoreCase("esc")) {
-            System.out.println("Are you sure you want to exit?");
+            OutputHandler.println("Are you sure you want to exit?");
             if (playerYesNo()) {
                 throw new RuntimeException("Exited game");
             }
@@ -26,18 +26,23 @@ public class InputHandler {
     }
 
     public static String playerInput(String str) {
-        System.out.println(str);
+        OutputHandler.println(str);
         return playerInput();
     }
 
     public static boolean playerYesNo() {
         String next = "";
         while (!(next.equalsIgnoreCase("Y") || next.equalsIgnoreCase("N"))) {
-            System.out.println("Y/N");
+            OutputHandler.println("Y/N");
             next = playerInput();
         }
 
         return next.equalsIgnoreCase("Y");
+    }
+
+    public static boolean playerYesNo(String req) {
+        System.out.println(req);
+        return playerYesNo();
     }
 
     /**
@@ -47,6 +52,13 @@ public class InputHandler {
      * @return an integer
      */
     public static int playerNum(int low, int high) {
+
+        if (low == high) {
+            OutputHandler.println("Low == high");
+            return low;
+        } else if (low > high) {
+            throw new RuntimeException("Low end of range greater than high end");
+        }
         while (true) {
             try {
                 int inp = Integer.parseInt(playerInput("Enter a number " + low + "-" + high));
@@ -54,7 +66,7 @@ public class InputHandler {
                     return inp;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Number must be between " + low + " and " + high);
+                OutputHandler.println("Number must be between " + low + " and " + high);
             }
         }
     }
@@ -66,9 +78,9 @@ public class InputHandler {
             throw new IllegalArgumentException("Must have at least one choice");
         }
 
-        System.out.println("Choose one:");
+        OutputHandler.println("Choose one:");
         for (int i = 0; i < arr.length; i++) {
-            System.out.println((i + 1) + ": " + arr[i].toString());
+            OutputHandler.println((i + 1) + ": " + arr[i].toString());
         }
 
         return arr[playerNum(1, arr.length) - 1];

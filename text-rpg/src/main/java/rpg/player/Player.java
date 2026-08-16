@@ -1,12 +1,14 @@
 package rpg.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import rpg.player.playerTemplates.*;
 import rpg.utility.InputHandler;
+import rpg.utility.OutputHandler;
 import rpg.utility.Tuple;
 import rpg.abilities.Attack;
 import rpg.abilities.DamageBundle;
@@ -17,7 +19,8 @@ import rpg.npcs.Enemy;
 public class Player { 
 
     private List<Item> items = new ArrayList<>();
-    private Set<Attack> attacks = new HashSet<>();
+    private List<Attack> attacks = new ArrayList<>();
+    private List<Attack> activeAttacks = Arrays.asList(new Attack[5]);
     
     private int health;
     private int healthRemaining;
@@ -32,10 +35,10 @@ public class Player {
         health = basePlayerType.hpMax();
         healthRemaining = health;
 
-        addAttacks(basePlayerType.attacks());
+        withAttacks(basePlayerType.attacks());
+
+        selectActiveAttacks();
     }
-
-
 
     public void addItem(Item i) {
         items.add(i);
@@ -54,21 +57,66 @@ public class Player {
         return healthRemaining > 0;
     }
 
-    public void addAttacks(Set<Attack> list) {
+    public void selectActiveAttacks() {
+        OutputHandler.println("Select active attacks:");
+        
+        if (attacks.size() == 0) {
+            OutputHandler.println("No equipable attacks");
+            return;
+        }
+
+        boolean cont = true;
+        while (cont) {
+            OutputHandler.printNumberedList(attacks);
+            OutputHandler.println("Select an attack to equip");
+            int num = InputHandler.playerNum(1, attacks.size());
+
+            OutputHandler.printNumberedList(activeAttacks);
+            OutputHandler.println("Select a slot to equip");
+            int act = InputHandler.playerNum(1, 5);
+
+            activeAttacks.set(act - 1, attacks.get(num));
+            
+            cont = InputHandler.playerYesNo("Continue?");
+        }
+    }
+
+    public Player withAttacks(List<Attack> list) {
         attacks.addAll(list);
+
+        int act = 0;
+        for (int i = 0; i < activeAttacks.size(); i++) {
+            if (activeAttacks.get(i) == null) {
+                act = i;
+                break;
+            }
+        }
+        int i = 0;
+        while (act < 5 && act < attacks.size()) {
+            Attack potentialAttack = attacks.get(i);
+            if (!activeAttacks.contains(potentialAttack)) {
+                activeAttacks.set(act, potentialAttack);
+                act++;
+            } 
+            i++;
+        }
+        
+
+        return this;
     }
 
     public void takeDamage(DamageBundle attack) {
 
         healthRemaining -= attack.damage();
+        OutputHandler.println("You took " + attack.damage() + " damage");
         if (isAlive()) {
-            System.out.println("You are now at " + healthRemaining + " hp");
+            OutputHandler.println("You are now at " + healthRemaining + " hp");
         } else {
-            System.out.println("You died!");
+            OutputHandler.println("You died!");
         }
     }
 
-    public DamageBundle calculateDamage(Attack attack) {
+    public DamageBundle dealDamage(Attack attack) {
         int additive = attack.baseDamage();
         int multiplicative = 1;
 
@@ -91,9 +139,10 @@ public class Player {
         for (Enemy e: enemies) {
             while (e.isAlive() && isAlive()) {
                 Attack attack = (Attack) InputHandler.choice(attacks.toArray());
-                e.takeDamage(calculateDamage(attack));
-
+                e.takeDamage(dealDamage(attack));
+                
                 if (e.isAlive()) {
+                    OutputHandler.println(e.toString() + " attacks");
                     takeDamage(e.attack());
                 }
             }

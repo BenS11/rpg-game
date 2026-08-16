@@ -5,6 +5,9 @@ public enum Element {
     WATER,
     AIR,
     EARTH,
-    PHYSICAL,
+    MELEE,
+    SLASHING,
+    PIERCING,
+    HEAL,
     NONE
 }

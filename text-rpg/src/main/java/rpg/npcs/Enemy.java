@@ -7,6 +7,7 @@ import java.util.List;
 import javax.management.RuntimeErrorException;
 
 import rpg.abilities.Element;
+import rpg.utility.OutputHandler;
 import rpg.utility.RandomUtil;
 import rpg.utility.Tuple;
 import rpg.abilities.Attack;
@@ -14,7 +15,6 @@ import rpg.abilities.DamageBundle;
 
 public class Enemy {
     private int health;
-    private int damage;
     private String name = "Enemy";
     private EnumSet<Element> strengths = EnumSet.noneOf(Element.class);
     private EnumSet<Element> weaknesses = EnumSet.noneOf(Element.class);
@@ -23,9 +23,8 @@ public class Enemy {
 
 
 
-    public Enemy(int health, int damage) {
+    public Enemy(int health) {
         this.health = health;
-        this.damage = damage;
     }
 
     public Enemy withName(String name) {
@@ -64,6 +63,8 @@ public class Enemy {
             damage *= 1.5;
         }
 
+        OutputHandler.println(name + " used " + attack.name());
+
         return new DamageBundle(damage, attack.element());
     }
 
@@ -80,9 +81,9 @@ public class Enemy {
 
         health -= baseDamage;
         if (isAlive()) {
-            System.out.println(name + " is now at " + health + " hp");
+            OutputHandler.println(name + " is now at " + health + " hp");
         } else {
-            System.out.println("Defeated " + name + "!");
+            OutputHandler.println("Defeated " + name + "!");
         }
     }
 
