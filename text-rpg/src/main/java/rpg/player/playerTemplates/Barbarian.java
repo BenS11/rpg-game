@@ -1,16 +1,13 @@
 package rpg.player.playerTemplates;
 
-import java.util.ArrayList;
-
-import rpg.abilities.Attack;
 import rpg.abilities.Attacks;
-import rpg.abilities.Element;
 
 public class Barbarian extends PlayerTemplate {
 
 
     public Barbarian() {
         this.hpMax = 20;
+        this.startingTreasure = 3;
         typeAttacks.add(Attacks.STAB);
         typeAttacks.add(Attacks.SLASH);
     }

@@ -2,14 +2,13 @@ package rpg.game.rooms;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import rpg.items.Item;
-import rpg.npcs.Enemy;
+import rpg.npcs.Foes.Enemy;
+import rpg.npcs.Shops.Shop;
 import rpg.player.Player;
-import rpg.utility.Coordinate;
 import rpg.utility.InputHandler;
 import rpg.utility.OutputHandler;
 
@@ -17,8 +16,10 @@ public class Room {
     private List<Enemy> enemies = new ArrayList<>(); 
     private int treasure;
     private Item item;
+    private Shop shop;
     private EnumMap<Direction, Room> exits = new EnumMap<>(Direction.class);
     private boolean bossRoom = false;
+    private boolean visited = false;
 
 
 
@@ -26,6 +27,11 @@ public class Room {
 
     public Room withEnemies(List<Enemy> enemies) {
         this.enemies.addAll(enemies);
+        return this;
+    }
+    
+    public Room withShop(Shop shop) {
+        this.shop = shop;
         return this;
     }
 
@@ -53,14 +59,20 @@ public class Room {
             }
             player.fight(enemies);
         }
+
     }
 
     public Room onExit(Player player) {
-        
-        OutputHandler.println("Congrats!");
+        if (!visited || enemies.size() > 0) {
+            OutputHandler.println("Congrats!");
+        }
+
+        removeDeadEnemies();
+
         if (treasure > 0) {
             OutputHandler.println("You gained " + treasure);
             player.addTreasure(treasure);
+            treasure = 0;
         } 
 
         if (item != null) {
@@ -68,13 +80,18 @@ public class Room {
             player.addItem(item);
         }
 
+        if (shop != null) {
+            player.shopAt(shop);
+        }
+
         if (bossRoom) {
 
         }
 
+        visited = true;
 
         OutputHandler.println("Which direction would you like to go?");
-        return exits.get(InputHandler.choice(exits.keySet().toArray()));
+        return exits.get(InputHandler.choice(exits.keySet().toArray(Direction[]::new)));
     }
 
     public void connect(Direction direction, Room room) {
@@ -128,6 +145,10 @@ public class Room {
 
         return start;
 
+    }
+
+    public void removeDeadEnemies() {
+        enemies.removeIf((e) -> !e.isAlive());
     }
 
 

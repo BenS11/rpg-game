@@ -1,11 +1,11 @@
 package rpg.game.rooms;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import rpg.items.Treasure;
-import rpg.npcs.Enemies;
+import rpg.npcs.Foes.Enemies;
+import rpg.npcs.Shops.Shop;
 import rpg.utility.Coordinate;
 
 public class Rooms {
@@ -62,7 +62,7 @@ public class Rooms {
 
         startRoom.connectBiDirectional(Direction.NORTH, createSmallEnemyRoom()).connectBiDirectional(Direction.EAST, createMediumEnemyRoom()).connectBiDirectional(Direction.NORTH, createLargeEnemyRoom());
 
-        startRoom.connectBiDirectional(Direction.SOUTH, createSmallEnemyRoom()).connectBiDirectional(Direction.WEST, createMediumEnemyRoom()).connect(Direction.WEST, createBossRoom());
+        startRoom.connectBiDirectional(Direction.SOUTH, createSmallEnemyRoom().withShop(new Shop())).connectBiDirectional(Direction.WEST, createMediumEnemyRoom()).connect(Direction.WEST, createBossRoom());
 
         return startRoom;
     }

@@ -1,4 +1,4 @@
-package rpg.npcs;
+package rpg.npcs.Foes;
 
 import java.util.List;
 

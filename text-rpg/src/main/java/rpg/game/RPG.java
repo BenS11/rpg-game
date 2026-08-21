@@ -1,14 +1,8 @@
 package rpg.game;
 
-import java.util.List;
-
-import rpg.game.rooms.Direction;
 import rpg.game.rooms.Room;
 import rpg.game.rooms.Rooms;
-import rpg.npcs.Enemies;
-import rpg.npcs.Enemy;
 import rpg.player.Player;
-import rpg.utility.InputHandler;
 import rpg.utility.OutputHandler;
 
 public class RPG {

@@ -2,27 +2,27 @@ package rpg.player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import rpg.player.playerTemplates.*;
-import rpg.utility.InputHandler;
-import rpg.utility.OutputHandler;
-import rpg.utility.Tuple;
 import rpg.abilities.Attack;
 import rpg.abilities.DamageBundle;
-import rpg.abilities.Element;
 import rpg.items.Item;
-import rpg.npcs.Enemy;
+import rpg.npcs.Foes.Enemy;
+import rpg.npcs.Shops.Shop;
+import rpg.player.playerTemplates.Barbarian;
+import rpg.player.playerTemplates.Debug;
+import rpg.player.playerTemplates.PlayerTemplate;
+import rpg.player.playerTemplates.Wizard;
+import rpg.utility.InputHandler;
+import rpg.utility.OutputHandler;
 
-public class Player { 
+public final class Player { 
 
     private List<Item> items = new ArrayList<>();
     private List<Attack> attacks = new ArrayList<>();
-    private List<Attack> activeAttacks = Arrays.asList(new Attack[5]);
+    private final List<Attack> activeAttacks = Arrays.asList(new Attack[5]);
     
-    private int health;
+    private final int health;
     private int healthRemaining;
 
     private int treasure;
@@ -30,14 +30,15 @@ public class Player {
     public boolean bossAlive = true;
 
     public Player() {
-        PlayerTemplate basePlayerType = InputHandler.choice(new Barbarian(), new Wizard());
+        PlayerTemplate basePlayerType = InputHandler.choice(new Barbarian(), new Wizard(), new Debug());
 
         health = basePlayerType.hpMax();
+        treasure = basePlayerType.treasure();
         healthRemaining = health;
 
         withAttacks(basePlayerType.attacks());
 
-        selectActiveAttacks();
+        // selectActiveAttacks();
     }
 
     public void addItem(Item i) {
@@ -60,7 +61,7 @@ public class Player {
     public void selectActiveAttacks() {
         OutputHandler.println("Select active attacks:");
         
-        if (attacks.size() == 0) {
+        if (attacks.isEmpty()) {
             OutputHandler.println("No equipable attacks");
             return;
         }
@@ -84,21 +85,8 @@ public class Player {
     public Player withAttacks(List<Attack> list) {
         attacks.addAll(list);
 
-        int act = 0;
-        for (int i = 0; i < activeAttacks.size(); i++) {
-            if (activeAttacks.get(i) == null) {
-                act = i;
-                break;
-            }
-        }
-        int i = 0;
-        while (act < 5 && act < attacks.size()) {
-            Attack potentialAttack = attacks.get(i);
-            if (!activeAttacks.contains(potentialAttack)) {
-                activeAttacks.set(act, potentialAttack);
-                act++;
-            } 
-            i++;
+        while (activeAttacks.size() < 5) {
+
         }
         
 
@@ -149,6 +137,35 @@ public class Player {
             
         }
 
+    }
+
+    public void shopAt(Shop shop) {
+        boolean hadItems = shop.hasItems();
+        if (!shop.visited() && hadItems) OutputHandler.println("Shopkeeper: Welcome to my shop!");
+        
+        while (shop.hasItems()) {
+            OutputHandler.println("This is what I have:");
+            shop.displayInventory();
+            OutputHandler.println("Or type 4 to finish");
+            int num = InputHandler.playerNum(1, 4);
+
+            if (num == 4) break;
+
+            if (shop.canBuy(num - 1, treasure)) {
+                Item i = shop.buy(num - 1);
+                treasure -= i.value();
+                items.add(i);
+            } else {
+                OutputHandler.println("You do not have enough treasure to buy this ):");
+            }
+
+        }
+        if (!shop.visited() || hadItems) {
+            OutputHandler.println("Thank you for shopping!");
+            OutputHandler.println("Please come again soon");
+        }
+
+        shop.visit();
     }
     
     

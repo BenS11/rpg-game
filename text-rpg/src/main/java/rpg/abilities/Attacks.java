@@ -3,6 +3,11 @@ package rpg.abilities;
 public class Attacks {
     private Attacks() {}
 
+    public static final Attack DEBUG_ATTACK = new Attack("Debug", 1000, Element.NONE);
+    public static final Attack DEBUG_HEAL = new Attack("Debug Heal", 1000, Element.HEAL);
+
+
+
     public static final Attack FIREBALL = new Attack("Fireball", 40, Element.FIRE);
     public static final Attack AIRCUTTER = new Attack("Air Cutter", 7, Element.AIR);
     public static final Attack EARTHRUPTURE = new Attack("Earthen Rupture", 8, Element.EARTH);

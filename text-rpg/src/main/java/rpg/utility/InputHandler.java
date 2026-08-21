@@ -1,9 +1,6 @@
 package rpg.utility;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.util.Scanner;
-
-import rpg.game.rooms.Direction;
 
 public class InputHandler {
     
@@ -53,10 +50,7 @@ public class InputHandler {
      */
     public static int playerNum(int low, int high) {
 
-        if (low == high) {
-            OutputHandler.println("Low == high");
-            return low;
-        } else if (low > high) {
+        if (low > high) {
             throw new RuntimeException("Low end of range greater than high end");
         }
         while (true) {
