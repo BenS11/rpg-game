@@ -8,24 +8,24 @@ public class Enemies {
     
     private Enemies() {}
 
-    public static Enemy getSmallEnemy() {
+    public static Enemy getSmallGoblin() {
         return new Enemy(8)
             .withName("Gobling")
-            .withAttacks(List.of(EnemyAttacks.smallSlash()))
+            .withAttacks(List.of(EnemyAttacks.SMALL_SLASH))
             .withWeaknesses(List.of(Element.EARTH, Element.AIR));
     }
 
-    public static Enemy getMediumEnemy() {
+    public static Enemy getMediumGoblin() {
         return new Enemy(14)
             .withName("Goblin Soldier")
-            .withAttacks(List.of(EnemyAttacks.largeSlash(), EnemyAttacks.slam()))
+            .withAttacks(List.of(EnemyAttacks.LARGE_SLASH, EnemyAttacks.SLAM))
             .withWeaknesses(List.of(Element.WATER, Element.FIRE));
     }
 
-    public static Enemy getLargeEnemy() {
+    public static Enemy getLargeGoblin() {
         return new Enemy(25)
             .withName("Goblin Brute")
-            .withAttacks(List.of(EnemyAttacks.largeSlash(), EnemyAttacks.slam()))
+            .withAttacks(List.of(EnemyAttacks.LARGE_SLASH, EnemyAttacks.SLAM))
             .withWeaknesses(List.of(Element.EARTH, Element.PIERCING))
             .withStrengths(List.of(Element.FIRE));
     }
@@ -33,7 +33,7 @@ public class Enemies {
     public static Enemy getBoss() {
         return new Enemy(50)
             .withName("Goblin Chief")
-            .withAttacks(List.of(EnemyAttacks.largeSlash(), EnemyAttacks.slam(), EnemyAttacks.smallSlash())) 
+            .withAttacks(List.of(EnemyAttacks.LARGE_SLASH, EnemyAttacks.SLAM, EnemyAttacks.SMALL_SLASH)) 
             .withWeaknesses(List.of(Element.FIRE))
             .withStrengths(List.of(Element.EARTH, Element.AIR, Element.WATER));
     }

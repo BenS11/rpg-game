@@ -32,18 +32,18 @@ public class Rooms {
 
     public static Room createSmallEnemyRoom() {
         return new Room().withTreasure(Treasure.randomTreasure()).withEnemies(
-            List.of(Enemies.getSmallEnemy(), Enemies.getSmallEnemy()));
+            List.of(Enemies.getSmallGoblin(), Enemies.getSmallGoblin()));
     }
 
     public static Room createMediumEnemyRoom() {
         return new Room()
             .withTreasure(Treasure.randomTreasure())
-            .withEnemies(List.of(Enemies.getMediumEnemy(), Enemies.getMediumEnemy()));
+            .withEnemies(List.of(Enemies.getMediumGoblin(), Enemies.getMediumGoblin()));
     }
 
     public static Room createLargeEnemyRoom() {
         return new Room()
-            .withEnemies(List.of(Enemies.getLargeEnemy()))
+            .withEnemies(List.of(Enemies.getLargeGoblin()))
             .withTreasure(Treasure.LARGE);
     }
 

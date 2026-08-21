@@ -7,16 +7,8 @@ public class EnemyAttacks {
     
     private EnemyAttacks() {}
 
-
-    public static Attack smallSlash() {
-        return new Attack("Small Slash", 2, Element.SLASHING);
-    }
-
-    public static Attack largeSlash() {
-        return new Attack("large slash", 3, Element.SLASHING);
-    }
-
-    public static Attack slam() {
-        return new Attack("slam", 4, Element.MELEE);
-    }
+        public static final Attack SMALL_SLASH = new Attack("Small Slash", 2, Element.SLASHING);
+        public static final Attack LARGE_SLASH =  new Attack("large slash", 3, Element.SLASHING);
+        public static final Attack SLAM =  new Attack("slam", 4, Element.MELEE);
+        public static final Attack FIREBALL = new Attack("fireball", 7, Element.FIRE);
 }
