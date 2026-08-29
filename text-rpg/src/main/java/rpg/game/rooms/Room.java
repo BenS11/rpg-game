@@ -9,15 +9,14 @@ import rpg.items.Item;
 import rpg.npcs.Foes.Enemy;
 import rpg.npcs.Shops.Shop;
 import rpg.player.Player;
-import rpg.utility.InputHandler;
-import rpg.utility.OutputHandler;
+import rpg.utility.IO;
 
 public class Room {
     private List<Enemy> enemies = new ArrayList<>(); 
     private int treasure;
     private Item item;
     private Shop shop;
-    private EnumMap<Direction, Room> exits = new EnumMap<>(Direction.class);
+    private final EnumMap<Direction, Room> exits = new EnumMap<>(Direction.class);
     private boolean bossRoom = false;
     private boolean visited = false;
 
@@ -51,11 +50,15 @@ public class Room {
         return this;
     }
 
+    public String visitedString() {
+        return visited ? "visited" : "unvisited";
+    }
+
     public void onEnter(Player player) {
         if (!enemies.isEmpty()) {
-            OutputHandler.println("This room contains:");
+            IO.println("This room contains:");
             for (Enemy e : enemies) {
-                OutputHandler.println(e.toString());
+                IO.println(e.toString());
             }
             player.fight(enemies);
         }
@@ -63,20 +66,20 @@ public class Room {
     }
 
     public Room onExit(Player player) {
-        if (!visited || enemies.size() > 0) {
-            OutputHandler.println("Congrats!");
+        if (!visited || !enemies.isEmpty()) {
+            IO.println("Congrats!");
         }
 
         removeDeadEnemies();
 
         if (treasure > 0) {
-            OutputHandler.println("You gained " + treasure);
+            IO.println("You gained " + treasure);
             player.addTreasure(treasure);
             treasure = 0;
         } 
 
         if (item != null) {
-            OutputHandler.println("You gained a " + item.toString());
+            IO.println("You gained a " + item.toString());
             player.addItem(item);
         }
 
@@ -84,14 +87,10 @@ public class Room {
             player.shopAt(shop);
         }
 
-        if (bossRoom) {
-
-        }
-
         visited = true;
 
-        OutputHandler.println("Which direction would you like to go?");
-        return exits.get(InputHandler.choice(exits.keySet().toArray(Direction[]::new)));
+        IO.println("Which direction would you like to go?");
+        return exits.get(IO.choice((r) -> exits.get(r).visitedString(), exits.keySet().toArray(Direction[]::new)));
     }
 
     public void connect(Direction direction, Room room) {
@@ -127,24 +126,8 @@ public class Room {
         return exits.containsKey(dir);
     }
 
-    /**
-     * generates a map and returns starter room
-     * @return
-     */
-    public static Room generateMap() {
-        Room start = Rooms.createStartRoom();
-        Room right = Rooms.createRandomRoom(1);
-        Room left = Rooms.createRandomRoom(1);
-
-        start.connect(Direction.WEST, left);
-        start.connect(Direction.EAST, right);
-
-
-
-        
-
-        return start;
-
+    public boolean visited() {
+        return visited;
     }
 
     public void removeDeadEnemies() {

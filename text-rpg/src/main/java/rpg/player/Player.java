@@ -13,8 +13,7 @@ import rpg.player.playerTemplates.Barbarian;
 import rpg.player.playerTemplates.Debug;
 import rpg.player.playerTemplates.PlayerTemplate;
 import rpg.player.playerTemplates.Wizard;
-import rpg.utility.InputHandler;
-import rpg.utility.OutputHandler;
+import rpg.utility.IO;
 
 public final class Player { 
 
@@ -30,7 +29,7 @@ public final class Player {
     public boolean bossAlive = true;
 
     public Player() {
-        PlayerTemplate basePlayerType = InputHandler.choice(new Barbarian(), new Wizard(), new Debug());
+        PlayerTemplate basePlayerType = IO.choice(new Barbarian(), new Wizard(), new Debug());
 
         health = basePlayerType.hpMax();
         treasure = basePlayerType.treasure();
@@ -50,35 +49,36 @@ public final class Player {
         this.treasure += treasure;
     }
 
-    public boolean bossAlive() {
-        return bossAlive;
+    public int treasure() {
+        return treasure;
     }
+
 
     public boolean isAlive() {
         return healthRemaining > 0;
     }
 
     public void selectActiveAttacks() {
-        OutputHandler.println("Select active attacks:");
+        IO.println("Select active attacks:");
         
         if (attacks.isEmpty()) {
-            OutputHandler.println("No equipable attacks");
+            IO.println("No equipable attacks");
             return;
         }
 
         boolean cont = true;
         while (cont) {
-            OutputHandler.printNumberedList(attacks);
-            OutputHandler.println("Select an attack to equip");
-            int num = InputHandler.playerNum(1, attacks.size());
+            IO.printNumberedList(attacks);
+            IO.println("Select an attack to equip");
+            int num = IO.playerNum(1, attacks.size());
 
-            OutputHandler.printNumberedList(activeAttacks);
-            OutputHandler.println("Select a slot to equip");
-            int act = InputHandler.playerNum(1, 5);
+            IO.printNumberedList(activeAttacks);
+            IO.println("Select a slot to equip");
+            int act = IO.playerNum(1, 5);
 
             activeAttacks.set(act - 1, attacks.get(num));
             
-            cont = InputHandler.playerYesNo("Continue?");
+            cont = IO.playerYesNo("Continue?");
         }
     }
 
@@ -96,11 +96,11 @@ public final class Player {
     public void takeDamage(DamageBundle attack) {
 
         healthRemaining -= attack.damage();
-        OutputHandler.println("You took " + attack.damage() + " damage");
+        IO.println("You took " + attack.damage() + " damage");
         if (isAlive()) {
-            OutputHandler.println("You are now at " + healthRemaining + " hp");
+            IO.println("You are now at " + healthRemaining + " hp");
         } else {
-            OutputHandler.println("You died!");
+            IO.println("You died!");
         }
     }
 
@@ -126,12 +126,14 @@ public final class Player {
     public void fight(List<Enemy> enemies) {
         for (Enemy e: enemies) {
             while (e.isAlive() && isAlive()) {
-                Attack attack = (Attack) InputHandler.choice(attacks.toArray());
+                Attack attack = (Attack) IO.choice(attacks.toArray());
                 e.takeDamage(dealDamage(attack));
                 
                 if (e.isAlive()) {
-                    OutputHandler.println(e.toString() + " attacks");
+                    IO.println(e.toString() + " attacks");
                     takeDamage(e.attack());
+                } else {
+                    e.onDeath();
                 }
             }
             
@@ -141,13 +143,13 @@ public final class Player {
 
     public void shopAt(Shop shop) {
         boolean hadItems = shop.hasItems();
-        if (!shop.visited() && hadItems) OutputHandler.println("Shopkeeper: Welcome to my shop!");
+        if (!shop.visited() && hadItems) IO.println("Shopkeeper: Welcome to my shop!");
         
         while (shop.hasItems()) {
-            OutputHandler.println("This is what I have:");
+            IO.println("This is what I have:");
             shop.displayInventory();
-            OutputHandler.println("Or type 4 to finish");
-            int num = InputHandler.playerNum(1, 4);
+            IO.println("Or type 4 to finish");
+            int num = IO.playerNum(1, 4);
 
             if (num == 4) break;
 
@@ -156,13 +158,13 @@ public final class Player {
                 treasure -= i.value();
                 items.add(i);
             } else {
-                OutputHandler.println("You do not have enough treasure to buy this ):");
+                IO.println("You do not have enough treasure to buy this ):");
             }
 
         }
         if (!shop.visited() || hadItems) {
-            OutputHandler.println("Thank you for shopping!");
-            OutputHandler.println("Please come again soon");
+            IO.println("Thank you for shopping!");
+            IO.println("Please come again soon");
         }
 
         shop.visit();

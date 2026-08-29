@@ -7,16 +7,16 @@ import java.util.List;
 import rpg.abilities.Attack;
 import rpg.abilities.DamageBundle;
 import rpg.abilities.Element;
-import rpg.utility.OutputHandler;
+import rpg.utility.IO;
 import rpg.utility.RandomUtil;
 
 public class Enemy {
     private int health;
     private String name = "Enemy";
-    private EnumSet<Element> strengths = EnumSet.noneOf(Element.class);
-    private EnumSet<Element> weaknesses = EnumSet.noneOf(Element.class);
+    private final EnumSet<Element> strengths = EnumSet.noneOf(Element.class);
+    private final EnumSet<Element> weaknesses = EnumSet.noneOf(Element.class);
 
-    private ArrayList<Attack> attacks = new ArrayList<>();
+    private final ArrayList<Attack> attacks = new ArrayList<>();
 
 
 
@@ -46,7 +46,7 @@ public class Enemy {
     }
 
     public Attack chooseAttack() {
-        if (attacks.size() == 0) {
+            if (attacks.isEmpty()) {
             throw new RuntimeException("No attacks in the enemies array");
         }
         return RandomUtil.randomChoice(attacks);
@@ -60,7 +60,7 @@ public class Enemy {
             damage *= 1.5;
         }
 
-        OutputHandler.println(name + " used " + attack.name());
+        IO.println(name + " used " + attack.name());
 
         return new DamageBundle(damage, attack.element());
     }
@@ -78,9 +78,9 @@ public class Enemy {
 
         health -= baseDamage;
         if (isAlive()) {
-            OutputHandler.println(name + " is now at " + health + " hp");
+            IO.println(name + " is now at " + health + " hp");
         } else {
-            OutputHandler.println("Defeated " + name + "!");
+            IO.println("Defeated " + name + "!");
         }
     }
 
@@ -92,6 +92,10 @@ public class Enemy {
     @Override
     public String toString() {
         return name;
+    }
+
+    // this is only for enemies that have special death actions
+    public void onDeath() {
     }
     
 

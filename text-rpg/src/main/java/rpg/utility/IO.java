@@ -1,19 +1,23 @@
 package rpg.utility;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
-public class InputHandler {
+import rpg.game.rooms.Direction;
+
+public class IO {
     
     private static final Scanner input = new Scanner(System.in);
     
-    private InputHandler() {
+    private IO() {
         //no instances for you
     }
 
     public static String playerInput() {
         String str = input.nextLine().trim();
         if (str.equalsIgnoreCase("esc")) {
-            OutputHandler.println("Are you sure you want to exit?");
+            println("Are you sure you want to exit?");
             if (playerYesNo()) {
                 throw new RuntimeException("Exited game");
             }
@@ -23,14 +27,14 @@ public class InputHandler {
     }
 
     public static String playerInput(String str) {
-        OutputHandler.println(str);
+        println(str);
         return playerInput();
     }
 
     public static boolean playerYesNo() {
         String next = "";
         while (!(next.equalsIgnoreCase("Y") || next.equalsIgnoreCase("N"))) {
-            OutputHandler.println("Y/N");
+            println("Y/N");
             next = playerInput();
         }
 
@@ -60,7 +64,7 @@ public class InputHandler {
                     return inp;
                 }
             } catch (NumberFormatException e) {
-                OutputHandler.println("Number must be between " + low + " and " + high);
+                println("Number must be between " + low + " and " + high);
             }
         }
     }
@@ -72,17 +76,52 @@ public class InputHandler {
             throw new IllegalArgumentException("Must have at least one choice");
         }
 
-        OutputHandler.println("Choose one:");
+        println("Choose one:");
         for (int i = 0; i < arr.length; i++) {
-            OutputHandler.println((i + 1) + ": " + arr[i].toString());
+            println((i + 1) + ": " + arr[i].toString());
         }
 
         return arr[playerNum(1, arr.length) - 1];
         
     } 
 
+    @SafeVarargs
+    public static <T> T choice(Function<T, String> supplimentaryStringFunction, T... arr) {
+        
+        if (arr.length < 1) {
+            throw new IllegalArgumentException("Must have at least one choice");
+        }
+
+        println("Choose one:");
+        for (int i = 0; i < arr.length; i++) {
+            println((i + 1) + ": " + arr[i].toString() + " " + supplimentaryStringFunction.apply(arr[i]));
+        }
+
+        return arr[playerNum(1, arr.length) - 1];
+        
+    } 
+
+    
+
+     public static void println(String s) {
+        System.out.println(s);
+    }
+
+    public static <V> void printNumberedList(List<V> list) {
+        for (int i = 0; i < list.size(); i++) {
+            V obj = list.get(i);
+            String name = obj != null ? obj.toString() : "None";
+            println(i + 1 + ". " + name);
+        }
+    }
+
 
     public static void close() {
         input.close();
+    }
+
+    public static Object choice(Object object, Direction[] array) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'choice'");
     }
 }

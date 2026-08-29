@@ -5,7 +5,7 @@ import java.util.List;
 
 import rpg.items.Item;
 import rpg.items.Items;
-import rpg.utility.OutputHandler;
+import rpg.utility.IO;
 
 public class Shop {
 
@@ -25,7 +25,7 @@ public class Shop {
     }
 
     public void displayInventory() {
-        OutputHandler.printNumberedList(forSale);
+        IO.printNumberedList(forSale);
     }
 
 

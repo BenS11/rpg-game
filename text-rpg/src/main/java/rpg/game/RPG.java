@@ -3,7 +3,7 @@ package rpg.game;
 import rpg.game.rooms.Room;
 import rpg.game.rooms.Rooms;
 import rpg.player.Player;
-import rpg.utility.OutputHandler;
+import rpg.utility.IO;
 
 public class RPG {
 
@@ -19,14 +19,17 @@ public class RPG {
 
         Room activeRoom = Rooms.createSmallTestMap();
 
-        while (player.bossAlive() && player.isAlive()) {
+        while (ProgressTracker.bossAlive && player.isAlive()) {
             activeRoom.onEnter(player);
 
-            if (player.isAlive()) {
+            if (player.isAlive() && ProgressTracker.bossAlive) {
                 activeRoom = activeRoom.onExit(player);
-            } else {
-                OutputHandler.println("You died! ):");
+            } else if (!player.isAlive()) {
+                IO.println("You died! ):");
                 break;
+            } else {
+                IO.println("You win!!!");
+                IO.println("You scored " + player.treasure());
             }
         }
     }

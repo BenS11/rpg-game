@@ -31,7 +31,7 @@ public class Enemies {
     }
 
     public static Enemy getBoss() {
-        return new Enemy(50)
+        return new Boss(50)
             .withName("Goblin Chief")
             .withAttacks(List.of(EnemyAttacks.LARGE_SLASH, EnemyAttacks.SLAM, EnemyAttacks.SMALL_SLASH)) 
             .withWeaknesses(List.of(Element.FIRE))
