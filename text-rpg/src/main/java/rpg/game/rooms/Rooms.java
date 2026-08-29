@@ -49,8 +49,9 @@ public class Rooms {
     }
 
     public static Room createBossRoom() {
+        System.out.println("created boss room");
         return new Room()
-            .withEnemies(List.of(Enemies.getBoss()))
+            .withBoss(Enemies.getBoss())
             .withTreasure(Treasure.BOSS_REWARD);
     }
 
@@ -67,7 +68,7 @@ public class Rooms {
                 return createSmallEnemyRoom();
             }
             case 1 -> {
-                if (rand > 0.66) {
+                if (rand > 0.33) {
                     return createMediumEnemyRoom();
                 } else {
                     return createShopRoom();
@@ -94,7 +95,7 @@ public class Rooms {
             case 4 -> {
                 if (rand > 0.75) {
                     return createShopRoom();
-                } else if (rand < 0.1) {
+                } else if (rand > 0.65) {
                     return createTreasureRoom();
                 } else {
                     return createLargeEnemyRoom();
@@ -137,6 +138,13 @@ public class Rooms {
 
     }
 
+    /**
+     * Recursive creates rooms until certain base cases are hit. Builds a section of the map
+     * @param cur current room
+     * @param fromDirection direction of the exit from last room to this room, eg adding an exit west of the last room makes this west
+     * @param roomCount the distance from the starting room
+     * @return a room
+     */
     public static Room createRoomRecursive(Room cur, Direction fromDirection, int roomCount) {
         
 
@@ -150,12 +158,20 @@ public class Rooms {
             return cur;
         }
         
+        if (!cur.hasExit(fromDirection) && Math.random() > roomCount / 8.0) {
+            cur.connectBiDirectional(fromDirection, createRoomRecursive(createRandomRoom(roomCount), fromDirection, roomCount + 1));
+        }
         
         for (Direction d : Direction.values()) {
-            if (d.equals(fromDirection.opposite())) continue;
+            
+            if (d.equals(fromDirection) || d.equals(fromDirection.opposite())) continue;
 
-            if (!cur.hasExit(d) && Math.random() > 0.5) {
-                cur.connectBiDirectional(d, createRoomRecursive(createRandomRoom(roomCount), d, roomCount + 1));
+            if (!cur.hasExit(d) && Math.random() > 0.7) {
+                Room next = createRandomRoom(roomCount + 1);
+
+                cur.connectBiDirectional(d, next);
+
+                createRoomRecursive(next, d, roomCount + 1);
             }
         }
 

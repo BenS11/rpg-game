@@ -6,7 +6,7 @@ import java.util.Random;
 public class RandomUtil {
     private RandomUtil() {}
 
-    private static Random rand = new Random(16l);
+    private static final Random rand = new Random(16l);
 
     /**
      * @return a random double between 0 and 1

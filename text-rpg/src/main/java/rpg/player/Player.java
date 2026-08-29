@@ -20,6 +20,8 @@ public final class Player {
     private List<Item> items = new ArrayList<>();
     private List<Attack> attacks = new ArrayList<>();
     private final List<Attack> activeAttacks = Arrays.asList(new Attack[5]);
+
+    public final PlayerTemplate basePlayerType;
     
     private final int health;
     private int healthRemaining;
@@ -29,7 +31,7 @@ public final class Player {
     public boolean bossAlive = true;
 
     public Player() {
-        PlayerTemplate basePlayerType = IO.choice(new Barbarian(), new Wizard(), new Debug());
+        basePlayerType = IO.choice(new Barbarian(), new Wizard(), new Debug());
 
         health = basePlayerType.hpMax();
         treasure = basePlayerType.treasure();

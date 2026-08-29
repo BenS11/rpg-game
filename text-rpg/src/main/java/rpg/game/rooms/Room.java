@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Objects;
 
+import rpg.game.ProgressTracker;
 import rpg.items.Item;
 import rpg.npcs.Foes.Enemy;
 import rpg.npcs.Shops.Shop;
@@ -12,6 +13,8 @@ import rpg.player.Player;
 import rpg.utility.IO;
 
 public class Room {
+    public static int idCount = 0;
+
     private List<Enemy> enemies = new ArrayList<>(); 
     private int treasure;
     private Item item;
@@ -19,6 +22,7 @@ public class Room {
     private final EnumMap<Direction, Room> exits = new EnumMap<>(Direction.class);
     private boolean bossRoom = false;
     private boolean visited = false;
+    public final int id = idCount++;
 
 
 
@@ -46,8 +50,31 @@ public class Room {
 
     public Room withBoss(Enemy boss) {
         this.bossRoom = true;
+        ProgressTracker.bossAlive = true;
+        ProgressTracker.bossExists = true;
         this.enemies.add(boss);
         return this;
+    }
+
+    public String getIdString() {
+        // lowk no reason to not just do this by concantention but I'm performative
+        StringBuilder builder = new StringBuilder("Room: ");
+
+        builder.append(id);
+        if (bossRoom) {
+            builder.append(" <-- Boss Room");
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Gets the exit attached to the current room in a direction
+     * @param d the specified direction
+     * @return A room or null
+     */
+    public Room getExit(Direction d) {
+        return exits.get(d);
     }
 
     public String visitedString() {
