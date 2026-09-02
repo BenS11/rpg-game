@@ -1,0 +1,15 @@
+
+# Secret/Local Configurations
+settings.xml
+.m2/
+
+# Maven build output
+target/
+
+
+# IDE specific files
+.vscode
+
+# OS files
+.DS_Store
+Thumbs.db
