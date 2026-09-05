@@ -9,14 +9,8 @@ import rpg.utility.IO;
 
 public class RPG {
 
-    
-    public static void main(String[] args) {
-        new RPG().startGame();
-    }
-    
 
-
-    private void startGame() {
+    public void startGame() {
         Player player = new Player();
 
         Room activeRoom = Rooms.createMap();
